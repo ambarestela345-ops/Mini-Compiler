@@ -85,6 +85,11 @@ def p_statements(p):
 def p_statement_decl(p):
     '''statement : INT ID EQUALS expression SEMICOLON'''
     symbol_table[p[2]] = p[4]
+    code.append(f"{p[2]} = {p[4]}")
+
+def p_statement_decl_only(p):
+    '''statement : INT ID SEMICOLON'''
+    symbol_table[p[2]] = None
 
 def p_statement_assign(p):
     '''statement : ID EQUALS expression SEMICOLON'''
@@ -95,7 +100,8 @@ def p_statement_assign(p):
         code.append(f"{p[1]} = {p[3]}")
 
 def p_statement_if(p):
-    '''statement : IF LPAREN condition RPAREN LBRACE statements RBRACE'''
+    '''statement : IF LPAREN condition RPAREN LBRACE statements RBRACE
+                 | IF LPAREN condition RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE'''
     code.append(f"if {p[3]} goto L1")
 
 def p_statement_print(p):
